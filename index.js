@@ -71,3 +71,22 @@ server.post("/products", function (req, res, next) {
   });
   console.log("products POST: sending response");
 });
+
+// Get a single product by theri product id
+server.get("/products/:id", function (req, res, next) {
+  console.log("GET /products/:id params=>" + JSON.stringify(req.params));
+
+  // Find a single product by their id within save
+  productsSave.findOne({ _id: req.params.id }, function (error, product) {
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new Error(JSON.stringify(error.errors)));
+
+    if (product) {
+      // send the product if no issues
+      res.send(product);
+    } else {
+      // send 404 header if the product doesn't exist
+      res.send(404);
+    }
+  });
+});
