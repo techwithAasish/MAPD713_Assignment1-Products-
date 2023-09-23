@@ -1,0 +1,14 @@
+{
+  "name": "products",
+  "version": "1.0.0",
+  "description": "Node.js server to store, retrieve and delete information about products",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aasish",
+  "license": "ISC",
+  "dependencies": {
+    "node": "^20.6.0"
+  }
+}
