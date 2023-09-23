@@ -37,7 +37,7 @@ server.get("/products", function (req, res, next) {
 
 // Create a new product
 server.post("/products", function (req, res, next) {
-  console.log("********************");
+  console.log("**********************");
   console.log("products POST: received request");
   console.log("POST /products params=>" + JSON.stringify(req.params));
   console.log("POST / products body=>" + JSON.stringify(req.body));
