@@ -10,10 +10,10 @@ let restify = require("restify"),
   server = restify.createServer({ name: SERVER_NAME });
 
 server.listen(PORT, HOST, function () {
-  console.log("Server %is listening at %s", server.name, server.url);
+  console.log("Server %s listening at %s", server.name, server.url);
   console.log("**** Resources: ****");
   console.log("********************");
-  console.log("Endpoints:", server.url, +"method: GET, POST, DELETE");
+  console.log("Endpoints: %s method: GET, POST, DELETE ", server.url);
   console.log("/products");
   console.log("/products/:id");
 });
@@ -23,6 +23,7 @@ server.use(restify.plugins.bodyParser());
 
 // Get all products in the system
 server.get("/products", function (req, res, next) {
+  console.log("********************");
   console.log("products GET: received request");
   console.log("GET /products params=>" + JSON.stringify(req.params));
 
@@ -36,6 +37,7 @@ server.get("/products", function (req, res, next) {
 
 // Create a new product
 server.post("/products", function (req, res, next) {
+  console.log("********************");
   console.log("products POST: received request");
   console.log("POST /products params=>" + JSON.stringify(req.params));
   console.log("POST / products body=>" + JSON.stringify(req.body));
