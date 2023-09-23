@@ -9,6 +9,8 @@
   "author": "aasish",
   "license": "ISC",
   "dependencies": {
-    "node": "^20.6.0"
+    "node": "^20.6.0",
+    "restify": "^11.1.0",
+    "save": "^2.9.0"
   }
 }
