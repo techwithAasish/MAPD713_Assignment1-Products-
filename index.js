@@ -84,9 +84,23 @@ server.get("/products/:id", function (req, res, next) {
     if (product) {
       // send the product if no issues
       res.send(product);
+      //   console.log(JSON.stringify(req.body));
     } else {
       // send 404 header if the product doesn't exist
       res.send(404);
     }
+  });
+});
+
+// Delete product with the given id
+server.del("/products/:id", function (req, res, next) {
+  console.log("DELETE /products params=>" + JSON.stringify(req.params));
+  // Delete the products with the persistence engine
+  productsSave.delete(req.params.id, function (error, product) {
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new Error(JSON.stringify(error.errors)));
+
+    // Send a 204 response
+    res.send(204);
   });
 });
