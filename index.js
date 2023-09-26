@@ -2,6 +2,10 @@ let SERVER_NAME = "product-api";
 let PORT = 5000;
 let HOST = "127.0.0.1";
 
+//counters for GET and POST request
+let totalGetCount = 0;
+let totalPostCount = 0;
+
 let errors = require("restify-errors");
 let restify = require("restify"),
   // Get a persistence engine for the users
@@ -26,11 +30,17 @@ server.get("/products", function (req, res, next) {
   console.log("********************");
   console.log("products GET: received request");
   console.log("GET /products params=>" + JSON.stringify(req.params));
+  totalGetCount++;
 
   // Find every entity within the given collection
   productsSave.find({}, function (error, products) {
     // Return all of the products in the system
     res.send(products);
+    console.log(
+      "Processed Request Count--> GET:",
+      totalGetCount + " , " + "POST:",
+      totalPostCount
+    );
   });
   console.log("products GET: sending response");
 });
@@ -41,6 +51,7 @@ server.post("/products", function (req, res, next) {
   console.log("products POST: received request");
   console.log("POST /products params=>" + JSON.stringify(req.params));
   console.log("POST / products body=>" + JSON.stringify(req.body));
+  totalPostCount++;
 
   // validation of manadatory fields
   if (req.body.name === undefined) {
@@ -57,6 +68,7 @@ server.post("/products", function (req, res, next) {
   }
 
   let newProduct = {
+    productId: req.body.productId,
     name: req.body.name,
     price: req.body.price,
     quantity: req.body.quantity,
@@ -68,6 +80,11 @@ server.post("/products", function (req, res, next) {
 
     // Send the product if no issues
     res.send(201, product);
+    console.log(
+      "Processed Request Count--> GET:",
+      totalGetCount + " , " + "POST:",
+      totalPostCount
+    );
   });
   console.log("products POST: sending response");
 });
@@ -92,15 +109,20 @@ server.get("/products/:id", function (req, res, next) {
   });
 });
 
-// Delete product with the given id
-server.del("/products/:id", function (req, res, next) {
+// Delete all products
+server.del("/products", function (req, res, next) {
   console.log("DELETE /products params=>" + JSON.stringify(req.params));
-  // Delete the products with the persistence engine
-  productsSave.delete(req.params.id, function (error, product) {
-    // If there are any errors, pass them to next in the correct format
-    if (error) return next(new Error(JSON.stringify(error.errors)));
 
-    // Send a 204 response
+  // Delete all products from the persistence engine
+  productsSave.deleteMany({}, function (error) {
+    console.log(`${req.method} ${req.url}: sending response`);
+
+    // If there are any errors, pass them to next in the correct format
+    if (error) {
+      return next(new Error(JSON.stringify(error.errors)));
+    }
+    // Send a success response indicating the number of products deleted
     res.send(204);
+    console.log("DELETE /products: all products are deleted");
   });
 });
