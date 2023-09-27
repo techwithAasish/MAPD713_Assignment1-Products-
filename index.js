@@ -112,6 +112,7 @@ server.get("/products/:id", function (req, res, next) {
 // Delete all products
 server.del("/products", function (req, res, next) {
   console.log("DELETE /products params=>" + JSON.stringify(req.params));
+  console.log("products DELETE: received request");
 
   // Delete all products from the persistence engine
   productsSave.deleteMany({}, function (error) {
